@@ -21,20 +21,7 @@
       }
 
       function ChatMessage(props) {
-        // const message = props.message;
-        // const sender = props.sender;
         const { message, sender } = props;
-
-        /*
-        if (sender === "robot") {
-          return (
-            <div>
-              <img src="robot.png" width="50" />
-              {message}
-            </div>
-          );
-        }
-        */
 
         return (
           <div>
@@ -45,7 +32,7 @@
         );
       }
 
-      function App() {
+      function ChatMessages(){
         // save the data
         const chatMessage = [
           {
@@ -70,10 +57,9 @@
           },
         ];
 
+        {/*generate the html*/}
         return (
           <>
-            <ChatInput />
-            {/*generate the html*/}
             {chatMessage.map((chatMessage) => {
               return (
                 <ChatMessage
@@ -84,19 +70,17 @@
               );
             })}
           </>
+        )
+      }
+
+      function App() {
+        return (
+          <>
+            <ChatInput />
+            <ChatMessages />
+          </>
         );
       }
-      /*
-      const app = (
-        <>
-          <ChatInput />
-          <ChatMessage message="hello chatbot" sender="user" />
-          <ChatMessage message="Hello! How can I help you?" sender="robot" />
-          <ChatMessage message="tell me todays date" sender="user" />
-          <ChatMessage message="Today is July 29th." sender="robot" />
-        </>
-      );
-      */
 
       const container = document.querySelector(".js-container");
       ReactDOM.createRoot(container).render(<App />);
