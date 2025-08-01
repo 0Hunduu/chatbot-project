@@ -84,46 +84,46 @@
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script type="text/babel">
       function ChatInput({ chatMessages, setChatMessages }) {
-        const [inputText, setInputText] = React.useState('');
+        const [inputText, setInputText] = React.useState("");
         const [isLoading, setIsLoading] = React.useState(false);
 
-        function saveInputText(e){
+        function saveInputText(e) {
           setInputText(e.target.value);
         }
 
-        function saveKeyDownText(e){
-          if( e.key === 'Enter'){
+        function saveKeyDownText(e) {
+          if (e.key === "Enter") {
             sendMessage();
-          } else if(e.key === 'Escape'){
-            setInputText('');
+          } else if (e.key === "Escape") {
+            setInputText("");
           }
         }
 
-        async function sendMessage(){
-          if (isLoading || inputText === ''){
+        async function sendMessage() {
+          if (isLoading || inputText === "") {
             return;
           }
 
           setIsLoading(true);
 
-          setInputText('');
+          setInputText("");
 
           const newChatMessages = [
             ...chatMessages,
             {
               message: inputText,
-              sender: 'user',
-              id: crypto.randomUUID()
-            }
+              sender: "user",
+              id: crypto.randomUUID(),
+            },
           ];
 
           setChatMessages([
             ...newChatMessages,
             {
-              message: 'Loading...',
-              sender: 'robot',
-              id: crypto.randomUUID()
-            }
+              message: "Loading...",
+              sender: "robot",
+              id: crypto.randomUUID(),
+            },
           ]);
 
           const response = await Chatbot.getResponseAsync(inputText);
@@ -131,9 +131,9 @@
             ...newChatMessages,
             {
               message: response,
-              sender: 'robot',
-              id: crypto.randomUUID()
-            }
+              sender: "robot",
+              id: crypto.randomUUID(),
+            },
           ]);
 
           setIsLoading(false);
@@ -149,43 +149,46 @@
               value={inputText}
               className="chat-input"
             />
-            <button
-              onClick={sendMessage}
-              className="send-button"
-            >Send</button>
+            <button onClick={sendMessage} className="send-button">
+              Send
+            </button>
           </div>
         );
       }
 
       function ChatMessage({ message, sender }) {
         return (
-          <div className={
-            sender === 'user'
-              ? 'chat-user'
-              : 'chat-robot'
-            }>
-            {sender === "robot" && <img src="pics/robot.png"         className="chat-pic" />}
-            <div className="chat-text">
-              {message}
-            </div>
-            {sender === "user" && <img src="pics/user.png" className="chat-pic" />}
+          <div className={sender === "user" ? "chat-user" : "chat-robot"}>
+            {sender === "robot" && (
+              <img src="pics/robot.png" className="chat-pic" />
+            )}
+            <div className="chat-text">{message}</div>
+            {sender === "user" && (
+              <img src="pics/user.png" className="chat-pic" />
+            )}
           </div>
         );
       }
 
-      function ChatMessages({ chatMessages }){
+      function ChatMessages({ chatMessages }) {
+        // 创建对 DOM 元素的引用
         const chatMessageRef = React.useRef(null);
+
+        // 实现自动滚动到底部功能
         React.useEffect(() => {
-          const containerElem = chatMessageRef.current
+          // 指向具体的 div 元素
+          const containerElem = chatMessageRef.current;
+
           if (containerElem) {
             containerElem.scrollTop = containerElem.scrollHeight;
           }
-        }, [chatMessages])
+        }, [chatMessages]);
 
-        {/*generate the html*/}
+        {
+          /*generate the html*/
+        }
         return (
-          <div className="chat-msg-container"
-            ref={chatMessageRef}>
+          <div className="chat-msg-container" ref={chatMessageRef}>
             {chatMessages.map((chatMessage) => {
               return (
                 <ChatMessage
@@ -196,7 +199,7 @@
               );
             })}
           </div>
-        )
+        );
       }
 
       function App() {
@@ -205,22 +208,22 @@
           {
             message: "hello chatbot",
             sender: "user",
-            id: '1'
+            id: "1",
           },
           {
             message: "Hello! How can I help you?",
             sender: "robot",
-            id: '2'
+            id: "2",
           },
           {
             message: "tell me todays date",
             sender: "user",
-            id: '3'
+            id: "3",
           },
           {
             message: "Today is July 29th.",
             sender: "robot",
-            id: '4'
+            id: "4",
           },
         ]);
         // const [chatMessage, setChatMessage] = array;
@@ -229,9 +232,7 @@
 
         return (
           <div className="app-container">
-            <ChatMessages
-              chatMessages={chatMessages}
-            />
+            <ChatMessages chatMessages={chatMessages} />
             <ChatInput
               chatMessages={chatMessages}
               setChatMessages={setChatMessages}
