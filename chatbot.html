@@ -15,12 +15,29 @@
     <script type="text/babel">
       function ChatInput({ chatMessages, setChatMessages }) {
         const [inputText, setInputText] = React.useState('');
+        const [isLoading, setIsLoading] = React.useState(false);
 
         function saveInputText(e){
           setInputText(e.target.value);
         }
 
-        function sendMessage(){
+        function saveKeyDownText(e){
+          if( e.key === 'Enter'){
+            sendMessage();
+          } else if(e.key === 'Escape'){
+            setInputText('');
+          }
+        }
+
+        async function sendMessage(){
+          if (isLoading || inputText === ''){
+            return;
+          }
+
+          setIsLoading(true);
+
+          setInputText('');
+
           const newChatMessages = [
             ...chatMessages,
             {
@@ -30,9 +47,16 @@
             }
           ];
 
-          setChatMessages(newChatMessages);
+          setChatMessages([
+            ...newChatMessages,
+            {
+              message: 'Loading...',
+              sender: 'robot',
+              id: crypto.randomUUID()
+            }
+          ]);
 
-          const response = Chatbot.getResponse(inputText);
+          const response = await Chatbot.getResponseAsync(inputText);
           setChatMessages([
             ...newChatMessages,
             {
@@ -42,7 +66,7 @@
             }
           ]);
 
-          setInputText('');
+          setIsLoading(false);
         }
 
         return (
@@ -51,6 +75,7 @@
               placeholder="Send a message to Chatbox"
               size="30"
               onChange={saveInputText}
+              onKeyDown={saveKeyDownText}
               value={inputText}
             />
             <button
